@@ -1,9 +1,9 @@
 123	CA
 ItemA	1	17.50
-ItemB	2	12.60
+ItemB	2	12.80
 125	AZ
-ItemB	1	6.30
-ItemC	3	27.00
-126 IL
+ItemB	1	6.40
+ItemC	3	27.55
+126	IL
 ItemA	2	35.00
-ItemC 1 9.00
+ItemC	1	9.00
