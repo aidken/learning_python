@@ -4,16 +4,24 @@
 import sys
 import os.path
 import re
+import logging
+
+# logger setup
+logfile = './log'
+logging.basicConfig(
+                     filename=logfile,
+                     level=   logging.DEBUG
+)
 
 # receive argument from command line
 myfile = sys.argv[1]                 # sys.argv is a list
-print("myfile given is " + myfile)
+logging.debug("Filter starting on " + myfile)
 
 # sys.argv[0] is always the name of this very program
 
 # see if myfile really exists
-if not os.path.isfile( myfile ):
-  print("Cannot find file 'myfile'.")
+if not os.path.isfile(myfile):
+  logging.critical("Cannot find file 'myfile'.")
   quit()                             # alternative sys.exit()
 
 with open(myfile, encoding='cp932') as tmp: # context manager
