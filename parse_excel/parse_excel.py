@@ -4,6 +4,14 @@ import os.path
 import xlrd
 import xlsxwriter
 import datetime
+import logging
+
+# logger setup
+logfile = './log'
+logging.basicConfig(
+                    filename = logfile,
+                    level    = logging.DEBUG
+)
 
 excel_file = './excel.xlsx'
 if not os.path.isfile(excel_file):
@@ -16,7 +24,12 @@ for s in wb.sheets():
   for r in range(s.nrows):
     values = []
     for c in range(s.ncols):
-      values.append('r=' + str(r) + ', c=' + str(c) + ': ' + s.cell(r,c).value)
+      tmp_value = s.cell(r,c).value
+      # if it's a date, convert it to Python date value
+      if s.cell(r,c).ctype==3:
+        tmp_value = datetime.datetime(*xlrd.xldate_as_tuple(tmp_value, wb.datemode)).isoformat()
+        logging.debug('Value is a date. ' + tmp_value)
+      values.append('r=' + str(r) + ', c=' + str(c) + ': ' + tmp_value)
     print('\t'.join(values))
   print()
 
