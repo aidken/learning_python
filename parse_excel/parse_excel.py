@@ -27,7 +27,10 @@ for s in wb.sheets():
       tmp_value = s.cell(r,c).value
       # if it's a date, convert it to Python date value
       if s.cell(r,c).ctype==3:
-        tmp_value = datetime.datetime(*xlrd.xldate_as_tuple(tmp_value, wb.datemode)).isoformat()
+        # date only, not time. pass only first 3 arugments from tuple
+        tmp_value = datetime.date(*xlrd.xldate_as_tuple(tmp_value, wb.datemode)[:3]).isoformat()
+        # date and time
+        # tmp_value = datetime.datetime(*xlrd.xldate_as_tuple(tmp_value, wb.datemode)).isoformat()
         logging.debug('Value is a date. ' + tmp_value)
       values.append('r=' + str(r) + ', c=' + str(c) + ': ' + tmp_value)
     print('\t'.join(values))
