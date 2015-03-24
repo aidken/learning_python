@@ -22,19 +22,24 @@ if not os.path.isfile(myfile):
     logging.critical("Cannot find file 'myfile'.")
     quit() # alternative sys.exit()
 
+def do_something(byte):
+    with open('output2.txt', 'ab') as f:       # open as binary
+        line = byte.decode('cp932', 'replace') # decode bytes using cp932
+        # do something with line here
+        byte = line.encode('utf-8', 'strict')  # encode string as utf8
+        f.write(byte)                          # write it as bytes, which is actually utf8
+
 line = b''  # empty bytearray
-with open(myfile, 'rb') as f, open('output.txt', 'wb') as new_file:
+with open(myfile, 'rb') as f:
     while True:
         byte = f.read(1)
         line = line + byte
 
         if not byte:
             if line != b'':
-                new_file.write(line)
+                do_something(line)
             break
 
-        # if it's linefeed, add it twice
         if ord(byte)==10:
-            line = line + byte
-            new_file.write(line)
+            do_something(line)
             line = b''
