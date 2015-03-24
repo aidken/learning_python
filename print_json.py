@@ -13,6 +13,4 @@ tmp = {
         },
 }
 
-tmp = {
-
 print(json.dumps(tmp, indent=4))
