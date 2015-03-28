@@ -10,7 +10,6 @@ def create_closure(l):
   >>> help(create_closure.create_closure)
 
   """
-  create_closure(list)
   def tmp(x):
     return [ i + x for i in l ]
   return tmp
