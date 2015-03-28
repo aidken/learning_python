@@ -9,8 +9,9 @@ import logging
 # logger setup
 logfile = './log'
 logging.basicConfig(
-                     filename=logfile,
-                     level=   logging.DEBUG
+  filename = logfile,
+  format   = '%(asctime)s: %(message)s',
+  level    = logging.DEBUG
 )
 
 # receive argument from command line
