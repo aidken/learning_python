@@ -23,12 +23,14 @@ if not os.path.isfile(myfile):
     logging.critical("Cannot find file 'myfile'.")
     quit() # alternative sys.exit()
 
-def do_something(line):
-    with open('output2.txt', 'ab') as f:       # open as binary
+def do_something(line, line_count):
+    try:
         line = line.decode('cp932', 'strict')  # decode bytes using cp932
         # do something with line here
-        byte = line.encode('utf-8', 'strict')  # encode string as utf8
-        f.write(byte)                          # write it as bytes, which is actually utf8
+    except UnicodeDecodeError:
+        raise Exception('Byte that cannot be decoded is found at line ' + str(line_count) + '.')
+
+    print(byte)   # encoding not sepcified, therefore utf8 is used 
 
 line_count = 1
 line       = b''  # empty bytearray
@@ -37,12 +39,15 @@ with open(myfile, 'rb') as f:
         byte = f.read(1)
         line = line + byte
 
+        # variable byte is not byte at the end of file
         if not byte:
             if line != b'':
-                do_something(line)
+                do_something(line, line_count)
+                line_count += 1
             break
 
+        # when linefeed 0A is seen, it's the end of a line
         if ord(byte)==10:
-            do_something(line)
-            line_count = line_count + 1
+            do_something(line, line_count)
+            line_count += 1
             line = b''
