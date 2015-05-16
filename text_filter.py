@@ -9,9 +9,9 @@ import logging
 # logger setup
 logfile = './log'
 logging.basicConfig(
-  filename = logfile,
-  format   = '%(asctime)s: %(message)s',
-  level    = logging.DEBUG
+    filename = logfile,
+    format   = '%(asctime)s: %(message)s',
+    level    = logging.DEBUG
 )
 
 # receive argument from command line
@@ -22,12 +22,12 @@ logging.debug("Filter starting on " + myfile)
 
 # see if myfile really exists
 if not os.path.isfile(myfile):
-  logging.critical("Cannot find file 'myfile'.")
-  quit()                             # alternative sys.exit()
+    logging.critical("Cannot find file 'myfile'.")
+    quit()                             # alternative sys.exit()
 
 with open(myfile, encoding='cp932') as tmp: # context manager
-  for line in tmp:                   # don't forget colon at the end.
-    # let's suppress all comments
-    line = line.rstrip()             # remove newline
-    line = re.sub('#.+', '', line)   # substitute anything after # with nothing
-    print(line)
+    for line in tmp:                   # don't forget colon at the end.
+        # let's suppress all comments
+        line = line.rstrip('\n')         # remove trailing newline
+        line = re.sub('#.+', '', line)   # substitute anything after # with nothing
+        print(line)
