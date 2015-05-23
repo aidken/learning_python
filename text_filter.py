@@ -10,7 +10,7 @@ import logging
 logfile = './log'
 logging.basicConfig(
     filename = logfile,
-    format   = '%(asctime)s: %(message)s',
+    format   = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)s: %(message)s',
     level    = logging.DEBUG
 )
 
