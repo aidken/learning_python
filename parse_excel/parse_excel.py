@@ -32,7 +32,7 @@ for s in wb.sheets():
         # date and time
         # tmp_value = datetime.datetime(*xlrd.xldate_as_tuple(tmp_value, wb.datemode)).isoformat()
         logging.debug('Value is a date. ' + tmp_value)
-      values.append('r=' + str(r) + ', c=' + str(c) + ': ' + tmp_value)
+      values.append('r=' + str(r) + ', c=' + str(c) + ': ' + str(tmp_value))
     print('\t'.join(values))
   print()
 
