@@ -39,7 +39,7 @@ for s in wb.sheets():
 # Excel row 1 is row 0 in python
 # Excel col 1 is col 0 in python
 
-new_wb = xlsxwriter.Workbook('./new_excel.xls')
+new_wb = xlsxwriter.Workbook('./new_excel.xlsm')
 new_ws = new_wb.add_worksheet('New Sheet')
 format1 = new_wb.add_format({'num_format': '#,###.00'})
 format2 = new_wb.add_format({'num_format': 'YYYY-MM-DD'})
@@ -49,4 +49,16 @@ new_ws.write( 1, 0, datetime.datetime.now().date(), format2)
 new_ws.write( 0, 2, 10 )
 new_ws.write( 1, 2, 25 )
 new_ws.write( 2, 2, "=SUM(C1:C2)")
+
+# set column width 20 on column 2 = B
+# https://xlsxwriter.readthedocs.org/worksheet.html?highlight=set_column#set_column
+new_ws.set_column(0, 2, 20)
+
+# set row height 30
+new_ws.set_row(0, 30)
+
+# adding vba project
+# http://xlsxwriter.readthedocs.org/working_with_macros.html
+# new_wb.add_vba_project('./vbaProject_func_last_until.bin')
+
 new_wb.close()                     # save and then close
