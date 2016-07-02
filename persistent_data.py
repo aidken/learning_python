@@ -7,8 +7,10 @@ import os.path
 storage = 'test.pickle'
 
 if os.path.isfile(storage):
-    tmp = pickle.load( open( 'test.pickle', 'wb' ) )
+    print('{} exists. retrieving data.'.format(storage))
+    tmp = pickle.load( open( 'test.pickle', 'rb' ) )
 else:
+    print('{} does not exist. creating data.'.format(storage))
     tmp = {
         'x': 123,
         'y': 456,
