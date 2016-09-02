@@ -1,19 +1,35 @@
 #! /usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-def create_closure(l):
-  """
-  create_closure(list) returns a function that receives a number as argument.
-  The function adds that number you gave as argument to each element of the list, and return the list as result.
+import logging
+import sys
 
-  To view this document, run this:
-  >>> import create_closure
-  >>> help(create_closure.create_closure)
 
-  """
-  def tmp(x):
-    return [ i + x for i in l ]
-  return tmp
+def main():
+    # logger setup
+    logfile = str(sys.argv[0]) + '.log'
+    logging.basicConfig(
+        filename = logfile,
+        format   = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)s: %(message)s',
+        # level    = logging.DEBUG,
+        level    = logging.ERROR,
+    )
 
-test = create_closure([2,3,4])
-for i in test(5):
-  print(i)        # 7 8 9
+    def test(x):
+        print('x is {}.'.format(x))
+        def test2():
+            nonlocal x  # this enables modification to var x in the enclosing scope
+            x += 1      # count up x
+            return x
+        return test2
+
+    tmp = test(10)
+    for i in range(20): print(tmp())
+
+# ref: http://stackoverflow.com/questions/1261875/python-nonlocal-statement
+# ref: http://stackoverflow.com/questions/4020419/why-arent-python-nested-functions-called-closures
+
+
+if __name__=='__main__':
+    main()
+
