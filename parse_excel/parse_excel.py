@@ -31,13 +31,14 @@ for s in wb.sheets():
         tmp_value = datetime.date(*xlrd.xldate_as_tuple(tmp_value, wb.datemode)[:3]).isoformat()
         # date and time
         # tmp_value = datetime.datetime(*xlrd.xldate_as_tuple(tmp_value, wb.datemode)).isoformat()
+        # see https://xlrd.readthedocs.io/en/latest/api.html#module-xlrd.xldate
         logging.debug('Value is a date. ' + tmp_value)
       values.append('r=' + str(r) + ', c=' + str(c) + ': ' + str(tmp_value))
     print('\t'.join(values))
   print()
 
-# Excel row 1 is row 0 in python
-# Excel col 1 is col 0 in python
+# Excel row 1 is row 0 in xlrd
+# Excel col 1 is col 0 in xlrd
 
 new_wb = xlsxwriter.Workbook('./new_excel.xlsm')
 new_ws = new_wb.add_worksheet('New Sheet')
