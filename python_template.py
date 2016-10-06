@@ -3,6 +3,7 @@
 
 import logging
 import sys
+import pytest
 
 def main():
     # logger setup
@@ -13,6 +14,8 @@ def main():
         # level    = logging.DEBUG,
         level    = logging.ERROR,
     )
+
+def test():
 
 
 if __name__=='__main__':
