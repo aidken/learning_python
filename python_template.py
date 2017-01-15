@@ -5,9 +5,19 @@ import logging
 import sys
 import pytest
 
+
 def main():
+    pass
+
+
+def test():
+    pass
+
+
+if __name__=='__main__':
+
     # logger setup
-    logfile = str(sys.argv[0]) + '.log'
+    logfile = str(sys.argv[0])[:-3] + '.log'
     logging.basicConfig(
         filename = logfile,
         format   = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)s: %(message)s',
@@ -15,9 +25,4 @@ def main():
         level    = logging.ERROR,
     )
 
-def test():
-
-
-if __name__=='__main__':
     main()
-
