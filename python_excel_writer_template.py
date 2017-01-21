@@ -60,6 +60,18 @@ def main():
         'font_size':  9,
         'font_color': '#404040',
     })
+    format_time = wb.add_format({
+        'num_format': u'hh:mm',
+        'font_name':  'Arial',
+        'font_size':  9,
+        'font_color': '#404040',
+    })
+    format_datetime_jpn = wb.add_format({
+        'num_format': u'[$-409]YYYY年MM月DD日 hh:mm',
+        'font_name':  'Arial',
+        'font_size':  9,
+        'font_color': '#404040',
+    })
     format_month = wb.add_format({
         'num_format': '[$-409]MMM YYYY',
         'font_name':  'Arial',
@@ -80,7 +92,7 @@ def main():
 
     ws.write_number(row, col, 12345.768, format_dec )
 
-    ws.write_datetime(row, col, 40000, format_dec )
+    ws.write_datetime(row, col, 40000, format_date_jpn )
 
     # set height of row zero (row 1) to 20
     ws.set_row( 0, 20 )
