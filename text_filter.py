@@ -1,28 +1,18 @@
 #! /usr/bin/env python3
 
-# a first python script
+# my first python script
 import sys
 import re
 import logging
 
 def main():
 
-    # logger setup
-    logfile = str(sys.argv[0]) + '.log'
-    logging.basicConfig(
-        filename = logfile,
-        format   = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)s: %(message)s',
-        # level    = logging.DEBUG,
-        level    = logging.ERROR,
-    )
-
-
     # receive argument from command line
     try:
         myfile = sys.argv[1]                 # sys.argv is a list
-        logging.debug("Filter starting on " + myfile)
+        logging.debug('Filter starting on {}'.format(myfile))
     except IndexError:
-        logging.error('Argument seems not passed.')
+        logging.exception('Argument not passed.')
         raise
 
     try:
@@ -33,9 +23,19 @@ def main():
                 line = re.sub('#.+', '', line)   # substitute anything after # with nothing
                 print(line)
     except FileNotFoundError:
-        logging.error('given file ' + myfile + ' is not found.')
+        logging.exception('Given file {} is not found.'.format(myfile))
         raise
 
 
 if __name__=='__main__':
-    main()
+
+    # logger setup
+    logfile = str(sys.argv[0]) + '.log'
+    logging.basicConfig(
+        filename = logfile,
+        format   = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)s: %(message)s',
+        # level    = logging.DEBUG,
+        level    = logging.ERROR,
+    )
+
+main()
