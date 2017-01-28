@@ -4,6 +4,7 @@
 import sys
 import re
 import logging
+import pytest
 
 def main():
 
@@ -27,6 +28,10 @@ def main():
         raise
 
 
+def test():
+    pass
+
+
 if __name__=='__main__':
 
     # logger setup
@@ -38,4 +43,4 @@ if __name__=='__main__':
         level    = logging.ERROR,
     )
 
-main()
+    main()
