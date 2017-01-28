@@ -25,6 +25,14 @@ def main():
     config['TEST']['this'] = '1000'
     print(config['TEST']['this'])
 
+    print(type( config['TEST']['alist'] ))
+    print(config['TEST']['alist'])     # this retuns a string, not a list
+
+    alist = config['TEST']['alist'].split(',') # split the string
+    print(alist)
+
+    print(config['TEST']['doesntexist']) # KeyError
+
 
 def test():
     pass
