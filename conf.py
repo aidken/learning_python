@@ -7,6 +7,11 @@ import pytest
 import configparser
 
 def main():
+    '''
+    http://stackoverflow.com/questions/8884188/how-to-read-and-write-ini-file-with-python
+    http://stackoverflow.com/questions/335695/lists-in-configparser
+    '''
+
     config = configparser.ConfigParser()
     config.read('tmp.conf')
 
