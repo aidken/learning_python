@@ -6,6 +6,8 @@ import sys
 import pytest
 import sample_class
 
+# http://stackoverflow.com/questions/12179271/python-classmethod-and-staticmethod-for-beginner
+# http://stackoverflow.com/questions/13211535/correct-use-of-static-methods
 
 def main():
 
