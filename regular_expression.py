@@ -10,14 +10,28 @@ def remove_zeros(var):
     except AttributeError:
         return var
 
-pieces = [
-    '1.00',
-    2.00,
-    3,
-    400
-]
 
-# list comprehension
-pieces = [remove_zeros(x) for x in pieces]
+def main():
 
-print(pieces)
+    pieces = [
+        '1.00',
+        2.00,
+        3,
+        400
+    ]
+
+    # list comprehension
+    pieces = [remove_zeros(x) for x in pieces]
+
+    print(pieces)
+
+
+    another_example = 'text_file.txt'
+
+    print(re.sub('\.txt$', '.xlsx', another_example))
+    # 'text_file.xlsx'
+
+    print(re.sub('\.[a-zA-Z]+$', '.xlsx', another_example))
+    # using character class, same result 'text_file.xlsx'
+
+main()
