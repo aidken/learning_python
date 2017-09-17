@@ -4,10 +4,12 @@
 import logging
 import sys
 
-class a():
-    def __init__(self,
-                 item,
-                 price):
+class item_master():
+    def __init__(
+            self,
+            item,
+            price
+    ):
         self.item  = str(item).strip()
         self.price = price
     def __str__(self):
@@ -17,23 +19,25 @@ class a():
         ))
 
 
-class b(a):
-    def __init__(self,
-                 item,
-                 price,
-                 desc):
+class item_detail(item_master):
+    def __init__(
+            self,
+            item,
+            price,
+            desc
+    ):
         a.__init__(self, item, price)
         self.desc  = str(desc).strip()
 
 
 def main():
-    x=a('A1500', 2.50)
+    x=item_master('A1500', 2.50)
     print(x)
     # A1500 = 2.5
 
-    y=b('B2700', 3.5, 'Water soluble')
+    y=item_detail('B2700', 3.5, 'Water soluble')
     print(y)
-    # this runs class a's __str__.
+    # this runs item_master's __str__.
     # B2700 = 3.5
 
 
