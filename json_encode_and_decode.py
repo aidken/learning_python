@@ -105,7 +105,7 @@ def main():
     l = list()
 
     l.append( Order(
-        item_number  = "Ritz S",
+        item_number  = 'Pencil',
         qty          = 1008,
         value        = None,
         date_created = datetime.date(2021, 5, 1),
@@ -113,9 +113,9 @@ def main():
     ) )
 
     l.append( Order(
-        item_number  = "Ritz Blackpepper",
+        item_number  = 'Eraser',
         qty          = 1100,
-        value        = 1100 * 12.9,
+        value        = 1100 * 0.79,
         date_created = None,
         container    = 'ABC1234567',
     ) )
@@ -140,10 +140,10 @@ if __name__ == '__main__':
     filename = str(sys.argv[0])[:-3] + '.log'
     format = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)-8s: %(message)s'
     logging.basicConfig(
-        filename=filename,
-        format=format,
-        datefmt='%m-%d %H:%M',
-        level=logging.INFO,
+        filename = filename,
+        format   = format,
+        datefmt  = '%m-%d %H:%M',
+        level    = logging.INFO,
         # level    = logging.DEBUG,
         # level    = logging.ERROR,
     )
