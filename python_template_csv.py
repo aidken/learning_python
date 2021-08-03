@@ -4,27 +4,103 @@
 import sys, io
 import logging
 import csv
+import datetime
+import json
 from dataclasses import dataclass, field
 
 # cSpell:ignore datefmt
 
+# consider to import mj.util helper functions
+# instead of defining them locally
+# from mj.util import _convert_to_date, _convert_to_str, _convert_to_int, _convert_to_float
+def _convert_to_date(tmp) -> datetime.date:
+    if tmp is None or tmp in ('None', ''):
+        return ''
+    elif isinstance(tmp, (datetime.date, datetime.datetime)):
+        return tmp.date()
+    elif isinstance(tmp, str):
+        x = datetime.datetime.strptime(tmp, '%Y-%m-%d')
+        return x.date()
+    else:
+        raise ValueError
+
+
+def _convert_to_str(tmp) -> str:
+    if tmp is None or tmp in ('None', ''):
+        return ''
+    else:
+        return str(tmp).strip()
+
+
+def _convert_to_int(tmp) -> int:
+    if tmp is None or tmp in ('None', ''):
+        return 0
+    else:
+        return int(tmp)
+
+
+def _convert_to_float(tmp) -> float:
+    if tmp is None or tmp in ('None', ''):
+        return 0
+    else:
+        return float(tmp)
+
+
+class Record_encoder(json.JSONEncoder):
+    # JSON Encoder
+    def default(self, obj):
+        if isinstance(obj, Record):
+            if isinstance(obj.some_date, datetime.date):
+                some_date = obj.some_date.isoformat()
+            elif obj.some_date is None or obj.some_date in ('None', ''):
+                some_date = ''
+            else:
+                raise ValueError
+            return {
+                'row_number': obj.row_number,
+                'some_str'  : obj.some_str,
+                'some_int'  : obj.some_int,
+                'some_float': obj.some_float,
+                'some_date' : some_date,
+            }
+        else:
+            return super().default(obj)
+
+
+def Record_decoder(tmp):
+    # JSON decoder
+    return Record(
+        row_number = tmp['row_number'],
+        some_str   = tmp['some_str'],
+        some_int   = tmp['some_int'],
+        some_float = tmp['some_float'],
+        some_date  = tmp['some_date'],
+    )
+
 
 @dataclass
 class Report:
-    file: str
+    file   : str
     records: list = field(default_factory=list, init=False)
 
     def __post_init__(self):
-        pass
+        self.file = _convert_to_str(self.file)
 
 
 @dataclass
 class Record:
     row_number: int
+    some_str  : str
+    some_int  : int
+    some_float: float
+    some_date : datetime.date
 
     def __post_init__(self):
-        if not isinstance(self.row_number, int):
-            self.row_number = int(str(self.row_number).strip())
+        self.row_number = _convert_to_int(self.row_number)
+        self.some_str   = _convert_to_str(self.some_str)
+        self.some_int   = _convert_to_int(self.some_int)
+        self.some_float = _convert_to_float(self.some_float)
+        self.some_date  = _convert_to_date(self.some_date)
 
 
 def parse(file, callback=None):
@@ -55,7 +131,11 @@ def parse(file, callback=None):
                 continue
 
             x = Record(
-                row_number=row_number,
+                row_number = row_number,
+                some_str   = row[0],
+                some_int   = row[1],
+                some_float = row[2],
+                some_date  = row[3],
             )
 
             # run callback at record that's just been created.
