@@ -4,12 +4,24 @@
 import logging
 import sys
 import io
+import datetime
 import argparse
+import configparser
 
-# cSpell:ignore datefmt
+# cSpell:ignore datefmt levelname fmt
 
+def _config_converter_date(x):
+    x = datetime.datetime.strptime(x, '%Y-%m-%d').date()
+    return x
 
 def main():
+
+    config = configparser.ConfigParser()
+    config.read('tmp.conf')
+
+    val1 = config['SECTION']['THIS']
+    val2 = config['SECTION']['THAT']
+
     arg_parser = argparse.ArgumentParser()
     group = arg_parser.add_mutually_exclusive_group()
 
@@ -60,12 +72,12 @@ if __name__ == '__main__':
 
     # logger setup
     filename = str(sys.argv[0])[:-3] + '.log'
-    format = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)-8s: %(message)s'
+    fmt = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)-8s: %(message)s'
     logging.basicConfig(
-        filename=filename,
-        format=format,
-        datefmt='%m-%d %H:%M',
-        level=logging.INFO,
+        filename = filename,
+        format   = fmt,
+        datefmt  = '%m-%d %H:%M',
+        level    = logging.INFO,
         # level    = logging.DEBUG,
         # level    = logging.ERROR,
     )

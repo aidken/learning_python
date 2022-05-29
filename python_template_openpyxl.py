@@ -8,42 +8,42 @@ import json
 from openpyxl import load_workbook
 from dataclasses import dataclass, field
 
-# cSpell:ignore openpyxl datefmt
+# cSpell:ignore openpyxl datefmt levelname dataclass
 
 # consider to import mj.util helper functions
 # instead of defining them locally
 # from mj.util import _convert_to_date, _convert_to_str, _convert_to_int, _convert_to_float
-def _convert_to_date(tmp) -> datetime.date:
-    if tmp is None or tmp in ('None', ''):
-        return ''
-    elif isinstance(tmp, (datetime.date, datetime.datetime)):
-        return tmp.date()
-    elif isinstance(tmp, str):
-        x = datetime.datetime.strptime(tmp, '%Y-%m-%d')
-        return x.date()
-    else:
-        raise ValueError
+# def _convert_to_date(tmp) -> datetime.date:
+#     if tmp is None or tmp in ('None', ''):
+#         return ''
+#     elif isinstance(tmp, (datetime.date, datetime.datetime)):
+#         return tmp.date()
+#     elif isinstance(tmp, str):
+#         x = datetime.datetime.strptime(tmp, '%Y-%m-%d')
+#         return x.date()
+#     else:
+#         raise ValueError
 
 
-def _convert_to_str(tmp) -> str:
-    if tmp is None or tmp in ('None', ''):
-        return ''
-    else:
-        return str(tmp).strip()
+# def _convert_to_str(tmp) -> str:
+#     if tmp is None or tmp in ('None', ''):
+#         return ''
+#     else:
+#         return str(tmp).strip()
 
 
-def _convert_to_int(tmp) -> int:
-    if tmp is None or tmp in ('None', ''):
-        return 0
-    else:
-        return int(tmp)
+# def _convert_to_int(tmp) -> int:
+#     if tmp is None or tmp in ('None', ''):
+#         return 0
+#     else:
+#         return int(tmp)
 
 
-def _convert_to_float(tmp) -> float:
-    if tmp is None or tmp in ('None', ''):
-        return 0
-    else:
-        return float(tmp)
+# def _convert_to_float(tmp) -> float:
+#     if tmp is None or tmp in ('None', ''):
+#         return 0
+#     else:
+#         return float(tmp)
 
 
 class Record_encoder(json.JSONEncoder):
@@ -151,10 +151,10 @@ if __name__ == '__main__':
 
     # logger setup
     filename = str(sys.argv[0])[:-3] + '.log'
-    format   = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)-8s: %(message)s'
+    fmt      = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)-8s: %(message)s'
     logging.basicConfig(
         filename = filename,
-        format   = format,
+        format   = fmt,
         datefmt  = '%m-%d %H:%M',
         level    = logging.INFO,
         # level    = logging.DEBUG,

@@ -8,7 +8,7 @@ import datetime
 import json
 from dataclasses import dataclass, field
 
-# cSpell:ignore datefmt
+# cSpell:ignore datefmt levelname dataclass
 
 # consider to import mj.util helper functions
 # instead of defining them locally
@@ -115,10 +115,10 @@ def parse(file, callback=None):
     r        = Report(file=file)
     encoding = 'utf-8'
 
-    with open(file=file, encoding=encoding) as csvfile:
-        # with open(file=file, encoding=encoding, errors='surrogateescape') as csvfile:
-        csvreader = csv.reader(csvfile, delimiter='\t')
-        for row_number, row in enumerate(csvreader, 1):
+    with open(file=file, encoding=encoding) as csv_file:
+        # with open(file=file, encoding=encoding, errors='surrogateescape') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter='\t')
+        for row_number, row in enumerate(csv_reader, 1):
 
             if row_number <= 3:
                 logging.debug(
@@ -160,13 +160,13 @@ if __name__ == '__main__':
 
     # logger setup
     filename = str(sys.argv[0])[:-3] + '.log'
-    format   = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)-8s: %(message)s'
+    fmt   = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)-8s: %(message)s'
     logging.basicConfig(
-        filename=filename,
-        format  =format,
-        datefmt ='%m-%d %H:%M',
-        level   =logging.INFO,
-        # level   =logging.DEBUG,
+          filename = filename,
+          format   = fmt,
+          datefmt  = '%m-%d %H:%M',
+          level    = logging.INFO,
+        # level    = logging.DEBUG,
         # level   =logging.ERROR,
     )
 
