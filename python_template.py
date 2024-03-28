@@ -4,93 +4,81 @@
 import logging
 import sys
 import io
-import datetime
 import argparse
-import configparser
 
-# cSpell:ignore datefmt levelname fmt
+# cSpell:ignore datefmt levelname
 
-def _config_converter_date(x):
-    x = datetime.datetime.strptime(x, '%Y-%m-%d').date()
-    return x
 
 def main():
-
-    config = configparser.ConfigParser()
-    config.read('tmp.conf')
-
-    val1 = config['SECTION']['THIS']
-    val2 = config['SECTION']['THAT']
-
     arg_parser = argparse.ArgumentParser()
     group = arg_parser.add_mutually_exclusive_group()
 
-    group.add_argument(
-        '-a', '--aaaaa', action='store_true', help='Do AAAAA.'
-    )
-    group.add_argument(
-        '-b', '--bbbbb', action='store_true', help='Do BBBBB.'
-    )
-    group.add_argument(
-        '-c', '--ccccc', action='store_true', help='Do CCCCC.'
-    )
-    group.add_argument(
-        '-d', '--ddddd', action='store_true', help='Do DDDDD.'
-    )
+    group.add_argument("-a", "--aaa", action="store_true", help="Do AAA.")
+    group.add_argument("-b", "--bbb", action="store_true", help="Do BBB.")
+    group.add_argument("-c", "--ccc", action="store_true", help="Do CCC.")
+    group.add_argument("-d", "--ddd", action="store_true", help="Do DDD.")
 
     args = arg_parser.parse_args()
 
-    if args.aaaaa == True:
-        aaaaa()
-    elif args.bbbbb == True:
-        bbbbb()
-    elif args.ccccc == True:
-        ccccc()
-    elif args.ddddd == True:
-        ddddd()
+    # if no argument is passed, show help
+    if len(sys.argv) == 1:
+        arg_parser.print_help(sys.stderr)
+        sys.exit(1)
 
-def aaaaa():
+    elif args.aaa:
+        aaa()
+    elif args.bbb:
+        bbb()
+    elif args.ccc:
+        ccc()
+    elif args.ddd:
+        ddd()
+    else:
+        arg_parser.print_help()
+
+
+def aaa():
+    logger.info("This is INFO, inside function aaa().")
+    logger.debug("This is DEBUG, inside function aaa().")
+    logger.warning("This is WARNING, inside function aaa().")
+    logger.error("This is ERROR, inside function aaa().")
+
+
+def bbb():
     pass
 
 
-def bbbbb():
+def ccc():
     pass
 
 
-def ccccc():
+def ddd():
     pass
 
 
-def ddddd():
-    pass
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # https://qiita.com/jack-low/items/91bf9b5342965352cbeb
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
     # logger setup
-    filename = str(sys.argv[0])[:-3] + '.log'
-    fmt = '%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)-8s: %(message)s'
-    logging.basicConfig(
-        filename = filename,
-        format   = fmt,
-        datefmt  = '%m-%d %H:%M',
-        level    = logging.INFO,
-        # level    = logging.DEBUG,
-        # level    = logging.ERROR,
-    )
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
 
-    # https://docs.python.org/3/howto/logging-cookbook.html#logging-to-multiple-destinations
-    # define a Handler which writes INFO messages or higher to the sys.stderr
-    console = logging.StreamHandler()
-    console.setLevel(logging.INFO)
-    # set a format which is simpler for console use
-    formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
-    # tell the handler to use this format
-    console.setFormatter(formatter)
-    # add the handler to the root logger
-    logging.getLogger('').addHandler(console)
+    file_name = str(sys.argv[0])[:-3] + ".log"
+    handler_file = logging.FileHandler(file_name)
+    handler_file.setLevel(logging.DEBUG)
+    formatter_file = logging.Formatter(
+        "%(asctime)s - %(filename)s: %(lineno)s: %(funcName)s - %(levelname)s: %(message)s"
+    )
+    handler_file.setFormatter(formatter_file)
+    logger.addHandler(handler_file)
+
+    # console logger to show INFO messages
+    handler_console = logging.StreamHandler()
+    handler_console.setLevel(logging.INFO)
+    formatter_console = logging.Formatter("%(name)s: %(levelname)s %(message)s")
+    handler_console.setFormatter(formatter_console)
+    logger.addHandler(handler_console)
 
     main()
