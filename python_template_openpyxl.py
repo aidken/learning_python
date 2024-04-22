@@ -10,6 +10,10 @@ from dataclasses import dataclass, field
 
 # cSpell:ignore openpyxl datefmt levelname dataclass
 
+# get logger of this library __name__ and attach a null handler
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
+
 
 @dataclass
 class Report:
@@ -43,15 +47,21 @@ def parse(file, worksheet, row_of_label, callback=None):
 
     wb = load_workbook(filename=file, read_only=True, data_only=True)
     ws = wb[worksheet]
-    logging.debug(f'Slurp item information. Looking at worksheet "{ws.title}".')
+    logger.debug(f'Slurp item information. Looking at worksheet "{ws.title}".')
 
     r = Report(file=file)
 
-    logging.debug(f'Max row of this sheet is {ws.max_row}.')
+    logger.debug(f'Max row of this sheet is {ws.max_row}.')
     for row_number, row in enumerate(ws.iter_rows(min_row=row_of_label+1, max_row=ws.max_row+1, values_only=True), start=row_of_label+1):
         # In openpyxl, row and column are one based, not zero based. Cell "A1" is row 1, col 1.
         # Note that when you iterate through rows, now a row is a tuple, and it is zero based.
         # In this example, row[0] is column A.
+        # a note on cell value evaluation:
+        # the value of a blank cell is None.
+        # the value of zero length string (such as ="") is None
+        # if you set data_only True on your load_workbook().
+        # the value of zero length string (such as ="") is '=""'
+        # if you do not set data_only property True on your load_workbook().
         r.records.append(
             Record(
                 row_number = row_number,
@@ -78,7 +88,8 @@ if __name__ == "__main__":
     # https://qiita.com/jack-low/items/91bf9b5342965352cbeb
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
-    # logger setup
+    # logger setup:
+    # if this library is run as a script, these logger setup is used
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
 

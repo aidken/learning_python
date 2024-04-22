@@ -9,6 +9,10 @@ from dataclasses import dataclass, field
 
 # cSpell:ignore datefmt levelname surrogateescape csvreader csvfile
 
+# get logger of this library __name__ and attach a null handler
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
+
 
 @dataclass
 class Report:
@@ -46,12 +50,12 @@ def parse(file, callback=None):
         for row_number, row in enumerate(csvreader, 1):
 
             if row_number <= 3:
-                logging.debug(
+                logger.debug(
                     f"Row {row_number}. First three rows are ignored. Skipping.")
                 continue
 
             elif len(row) == 0:
-                logging.debug(
+                logger.debug(
                     f"Row {row_number}. Length of row is zero. Skipping.")
                 continue
 
@@ -79,7 +83,8 @@ if __name__ == "__main__":
     # https://qiita.com/jack-low/items/91bf9b5342965352cbeb
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
-    # logger setup
+    # logger setup:
+    # if this library is run as a script, these logger setup is used
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
 
