@@ -10,7 +10,7 @@ class BinaryNode:
         self.right = right
 
 
-class IndextableNode(BinaryNode):
+class IndexableNode(BinaryNode):
     def _traverse(self):
         if self.left is not None:
             yield from self.left._traverse()
