@@ -55,7 +55,7 @@ def replace_multiple_words_case_insensitive(input_path, output_path, replacement
     lower_dict = {key.lower(): val for key, val in replacement_dict.items()}
 
     # 2. Sort by length descending (using the original keys is fine for length)
-    sorted_words = sorted(replacement_dict.keys(), key=len, reverse=True)
+    sorted_words = sorted(lower_dict.keys(), key=len, reverse=True)
 
     # 3. Create the pattern
     pattern_string = r'\b(' + '|'.join(re.escape(word) for word in sorted_words) + r')\b'
@@ -81,6 +81,45 @@ def replace_multiple_words_case_insensitive(input_path, output_path, replacement
             # multiple times if it finds more than one matches.
             modified_line = compiled_pattern.sub(replace_match, line)
             outfile.write(modified_line)
+
+
+def filter_case_insensitive(input_path, output_path, words_dict=_REPLACEMENT_DICT):
+    '''filter_case_insensitive filters a text file, print if a line contains certain words,
+    and ignore lines that do not contains those words.
+
+    Args:
+        input_path (_type_): _description_
+        output_path (_type_): _description_
+        words_dict (_type_, optional): _description_. Defaults to _REPLACEMENT_DICT.
+    '''
+
+    # 2. Sort by length descending (using the original keys is fine for length)
+    sorted_words = sorted(words_dict.keys(), key=len, reverse=True)
+
+    # 3. Create the pattern
+    pattern_string = r'\b(' + '|'.join(re.escape(word) for word in sorted_words) + r')\b'
+
+    # 4. Add flags/options here if you want
+    compiled_pattern = re.compile(pattern_string, flags=re.IGNORECASE)
+
+    # # 5. The callback function
+    # def replace_match(match):
+    #     # match.group(0) is guaranteed to exist here!
+    #     word_found = match.group(0).lower()  # Convert found word to lowercase to match our dictionary
+    #     return lower_dict[word_found]
+
+    # 6. Stream and process
+    with (
+        open(input_path, 'r', encoding='utf-8') as infile,
+        open(output_path, 'w', encoding='utf-8') as outfile
+    ):
+        # with one with statement, you can open multiple file handles
+        # from 3.10. no longer need nested with's.
+        for line in infile:
+            # sub() searches from the beginning of line. it invokes callback
+            # multiple times if it finds more than one matches.
+            if compiled_pattern.search(line)
+                outfile.write(line)
 
 
 def bbb():
